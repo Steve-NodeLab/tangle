@@ -33,9 +33,7 @@ EOF
 
 logo_nodelab;
 
-
-
-echo "===========Tangle Network v0.6.1 Install Easy======= " && sleep 1
+echo "=========+============Tangle Network v0.6.1 Install Easy================= " && sleep 1
 
 read -p "Do you want run node Tangle Network? (y/n): " choice
 
