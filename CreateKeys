@@ -1,15 +1,3 @@
-#!/bin/bash
-
-clear
-
-if [[ ! -f "$HOME/.bash_profile" ]]; then
-    touch "$HOME/.bash_profile"
-fi
-
-if [ -f "$HOME/.bash_profile" ]; then
-    source $HOME/.bash_profile
-fi
-
 if [ "$choice" == "y" ]; then
 read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
 	if [ -z "$input_phrase" ]; then
