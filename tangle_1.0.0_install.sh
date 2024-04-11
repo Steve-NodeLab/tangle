@@ -53,21 +53,12 @@ if [ "$choice" == "y" ]; then
      echo "Node Name is: $MONIKER"
 
 if [ "$choice" == "y" ]; then
-    read -p "Input current server username: " input_username
-    if [ -z "$input_username" ]; then
-    echo "Node Name cannot be empty!"
-    exit 1
-     fi
-     USERNAME="$input_username"
-     echo "UserName is: $USERNAME"
-
-if [ "$choice" == "y" ]; then
-	read -p "Input 12 word Menomic Phrase for Validator Account: " input_passphrase
-	if [ -z "$input_passphrase" ]; then
+	read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
+	if [ -z "$input_phrase" ]; then
 	echo "Passphrase cannot be empty!"
 	exit 1
 		fi
-		PASSPHRASE="$input_passphrase"
+		PASSPHRASE="$input_phrase"
 		echo "12 word Menomic Passphrase is: $PASSPHRASE"
 fi
 
@@ -92,43 +83,6 @@ sudo tangle --version
 sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
 
 sudo chmod 744 ~/.tangle/tangle-mainnet.json
-
-#! Create Keys
-
-sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
---chain tangle-testnet \
---scheme Sr25519 \
---suri "$PASSPHRASE" \
---key-type acco
-echo "Account Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Sr25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type babe
-echo "Babe Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Sr25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type imon
-echo "ImOnline Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Ecdsa \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type role
-echo "Role Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Ed25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type gran
-echo "Grandpa Key Created"
 
 #! Create System File
 
