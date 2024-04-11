@@ -50,16 +50,7 @@ if [ "$choice" == "y" ]; then
     exit 1
      fi
      MONIKER="$input_moniker"
-	read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
-	if [ -z "$input_phrase" ]; then
-	echo "Passphrase cannot be empty!"
-	exit 1
-		fi
-		PASSPHRASE="$input_phrase"
-		echo "Node Name is: $MONIKER"
-		echo "12 word Menomic Passphrase is: $PASSPHRASE"    
-	
-
+     echo "Node Name is: $MONIKER"
 fi
 
 # Install Build Pre-requisites
