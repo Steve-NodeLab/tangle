@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# This software may be used and distributed according to the terms of the Llama 2 Community License Agreement.
-
-read -p "Enter the URL from email: " PRESIGNED_URL
-
 clear
 
 if [[ ! -f "$HOME/.bash_profile" ]]; then
@@ -23,25 +18,26 @@ clear
 =========================================================================
      __	 __          __      __           __       _______        __ 
     | \ | |         | |     | |          | |      |__ ___|       | |
-	|  \| | ___	  __| |	___ | |    ___ _ | |__		| | ___  ___ | |___
-	|	  |/ _ \ / _  |/ __\| |   /   | ||    \		| |/   \/  _\|	__ \
- 	| |\  | (_) | (_) | /o__| |___| (|  || | ) | _ 	| | /o__| |__| | | |
-	|_| \_|\___/ \____|\___||____|\___|_||____/ (_)	|_|\___|\___/|_| |_|
+    |  \| | ___	  __| |	___ | |    ___ _ | |__      | | ___  ___ | |___
+    |	  |/ _ \ / _  |/ __\| |   /   | ||  _ \	    | |/   \/  _\|  __ \
+    | |\  | (_) | (_) | /o__| |___| (|  || |_) | _  | | /o__| |__| | | |
+    |_| \_|\___/ \____|\___||____|\___|_||____/ (_) |_|\___|\___/|_| |_|
 	
 =========================================================================
              Developed by: NodeLab.Tech
              Twitter: https://twitter.com/theNodeLab
              Telegram: https://t.me/theNodeLab
 =========================================================================
+	
 EOF
 
 }
 
 logo_nodelab;
 
+# Request Validator Name
 
-
-echo "===========Tangle Network Install Easy======= " && sleep 1
+echo "======================== Tangle Mainnet v1.0.0 Install ==================== " && sleep 1
 
 read -p "Do you want run node Tangle Network? (y/n): " choice
 
@@ -54,8 +50,19 @@ if [ "$choice" == "y" ]; then
     exit 1
      fi
      MONIKER="$input_moniker"
-     echo "Node Name is: $MONIKER"
+	read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
+	if [ -z "$input_phrase" ]; then
+	echo "Passphrase cannot be empty!"
+	exit 1
+		fi
+		PASSPHRASE="$input_phrase"
+		echo "Node Name is: $MONIKER"
+		echo "12 word Menomic Passphrase is: $PASSPHRASE"    
+	
+
 fi
+
+# Install Build Pre-requisites
 
 sudo apt update && apt upgrade -y
 
@@ -63,54 +70,93 @@ sudo apt install curl iptables build-essential git wget jq make gcc nano tmux ht
 
 cd $HOME
 
+# Install Tangle
+
 sudo mkdir -p $HOME/.tangle && cd $HOME/.tangle
 
-sudo wget -O tangle https://github.com/webb-tools/tangle/releases/download/v0.6.1/tangle-testnet-linux-amd64
+sudo wget -O tangle https://github.com/webb-tools/tangle/releases/download/v1.0.0/tangle-default-linux-amd64
 sudo chmod 744 tangle
 sudo mv tangle /usr/bin/
 sudo tangle --version
 # 0.5.0-e892e17-x86_64-linux-gnu
 
-sudo wget -O $HOME/.tangle/tangle-standalone.json "https://raw.githubusercontent.com/webb-tools/tangle/main/chainspecs/testnet/tangle-testnet.json"
+sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
+--chain tangle-testnet \
+--scheme Sr25519 \
+--suri "$PASSPHRASE" \
+--key-type acco
+echo "Account Key Created"
 
-sudo chmod 744 ~/.tangle/tangle-standalone.json
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type babe
+echo "Babe Key Created"
 
-sudo tee /etc/systemd/system/tangle.service > /dev/null << EOF
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type imon
+echo "ImOnline Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ecdsa \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type role
+echo "Role Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ed25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type gran
+echo "Grandpa Key Created"
+
+sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
+
+sudo chmod 744 ~/.tangle/tangle-mainnet.json
+
+# Create System File
+
+sudo tee /etc/systemd/system/full.service > /dev/null << EOF
 [Unit]
-Description=Tangle Validator Node
+Description=Tangle Full Node
 After=network-online.target
 StartLimitIntervalSec=0
+ 
 [Service]
 User=$USER
 Restart=always
 RestartSec=3
-LimitNOFILE=65535
 ExecStart=/usr/bin/tangle \
-  --base-path $HOME/.tangle/data/ \
-  --name '$MONIKER' \
-  --chain $HOME/.tangle/tangle-standalone.json \
+  --base-path $HOME/.tangle/data \
+  --name "$MONIKER" \
+  --chain tangle-mainnet \
   --node-key-file "$HOME/.tangle/node-key" \
-  --port 30333 \
-  --rpc-port 9933 \
-  --prometheus-port 9615 \
-  --auto-insert-keys \
-  --validator \
-  --pruning archive \
-  --telemetry-url "wss://telemetry.polkadot.io/submit 0" \
-  --no-mdns
+  --rpc-cors all \
+  --port 9946 \
+  --no-mdns \
+  --telemetry-url "wss://telemetry.polkadot.io/submit/ 1"
+ 
 [Install]
 WantedBy=multi-user.target
 EOF
 
+# Start Service
 
 sudo systemctl daemon-reload
-sudo systemctl enable tangle
-sudo systemctl restart tangle && sudo journalctl -u tangle -f -o cat
+sudo systemctl enable full
+sudo systemctl restart full && sudo journalctl -u full -f -o cat
 
 fi
 
+# Cleanup
+
 sudo rm -rf tangle_install
 
-echo "Check logs: sudo journalctl -u tangle -f -o cat"
+echo "Check logs: sudo journalctl -u full -f -o cat"
 
-echo "Check status: sudo systemctl status tangle"
+echo "Check status: sudo systemctl status full"
