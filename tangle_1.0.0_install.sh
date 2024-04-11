@@ -80,6 +80,32 @@ sudo mv tangle /usr/bin/
 sudo tangle --version
 # 0.5.0-e892e17-x86_64-linux-gnu
 
+# Create System File
+
+sudo tee /etc/systemd/system/full.service > /dev/null << EOF
+[Unit]
+Description=Tangle Full Node
+After=network-online.target
+StartLimitIntervalSec=0
+ 
+[Service]
+User=$USER
+Restart=always
+RestartSec=3
+ExecStart=/usr/bin/tangle \
+  --base-path $HOME/.tangle/data \
+  --name "$MONIKER" \
+  --chain tangle-mainnet \
+  --node-key-file "$HOME/.tangle/node-key" \
+  --rpc-cors all \
+  --port 9946 \
+  --no-mdns \
+  --telemetry-url "wss://telemetry.polkadot.io/submit/ 1"
+ 
+[Install]
+WantedBy=multi-user.target
+EOF
+
 # Create Keys
 
 sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
@@ -120,32 +146,6 @@ echo "Grandpa Key Created"
 sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
 
 sudo chmod 744 ~/.tangle/tangle-mainnet.json
-
-# Create System File
-
-sudo tee /etc/systemd/system/full.service > /dev/null << EOF
-[Unit]
-Description=Tangle Full Node
-After=network-online.target
-StartLimitIntervalSec=0
- 
-[Service]
-User=$USER
-Restart=always
-RestartSec=3
-ExecStart=/usr/bin/tangle \
-  --base-path $HOME/.tangle/data \
-  --name "$MONIKER" \
-  --chain tangle-mainnet \
-  --node-key-file "$HOME/.tangle/node-key" \
-  --rpc-cors all \
-  --port 9946 \
-  --no-mdns \
-  --telemetry-url "wss://telemetry.polkadot.io/submit/ 1"
- 
-[Install]
-WantedBy=multi-user.target
-EOF
 
 # Start Service
 
