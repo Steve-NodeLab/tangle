@@ -1,0 +1,43 @@
+# Create Keys
+
+read -p "Input 12 word Menomic Phrase for Validator Account: " input_passphrase
+	if [ -z "$input_passphrase" ]; then
+	echo "Passphrase cannot be empty!"
+	exit 1
+		PASSPHRASE="$input_passphrase"
+		echo "12 word Menomic Passphrase is: $PASSPHRASE"
+
+sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
+--chain tangle-testnet \
+--scheme Sr25519 \
+--suri "$PASSPHRASE" \
+--key-type acco
+echo "Account Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type babe
+echo "Babe Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type imon
+echo "ImOnline Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ecdsa \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type role
+echo "Role Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ed25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type gran
+echo "Grandpa Key Created"
