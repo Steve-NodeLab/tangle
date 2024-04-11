@@ -1,11 +1,24 @@
-# Create Keys
+#!/bin/bash
 
-read -p "Input 12 word Menomic Phrase for Validator Account: " input_passphrase
-	if [ -z "$input_passphrase" ]; then
+clear
+
+if [[ ! -f "$HOME/.bash_profile" ]]; then
+    touch "$HOME/.bash_profile"
+fi
+
+if [ -f "$HOME/.bash_profile" ]; then
+    source $HOME/.bash_profile
+fi
+
+if [ "$choice" == "y" ]; then
+read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
+	if [ -z "$input_phrase" ]; then
 	echo "Passphrase cannot be empty!"
 	exit 1
-		PASSPHRASE="$input_passphrase"
+		fi
+		PASSPHRASE="$input_phrase"
 		echo "12 word Menomic Passphrase is: $PASSPHRASE"
+fi
 
 sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
 --chain tangle-testnet \
