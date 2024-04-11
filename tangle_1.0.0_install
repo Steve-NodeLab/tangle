@@ -35,8 +35,6 @@ EOF
 
 logo_nodelab;
 
-#! Request Validator Name and Menomic
-
 echo "======================== Tangle Mainnet v1.0.0 Install ==================== " && sleep 1
 
 read -p "Do you want run node Tangle Network? (y/n): " choice
@@ -65,15 +63,11 @@ if [ "$choice" == "y" ]; then
       echo "12 word Menomic Passphrase is: $PASSPHRASE"
 fi
 
-#! Install Build Pre-requisites
-
 sudo apt update && apt upgrade -y
 
 sudo apt install curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev libgmp3-dev tar clang bsdmainutils ncdu unzip llvm libudev-dev make protobuf-compiler -y
 
 cd $HOME
-
-#! Install Tangle
 
 sudo mkdir -p $HOME/.tangle && cd $HOME/.tangle
 
@@ -86,8 +80,6 @@ sudo tangle --version
 sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
 
 sudo chmod 744 ~/.tangle/tangle-mainnet.json
-
-#! Create Keys
 
 sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
 --chain tangle-testnet \
@@ -124,8 +116,6 @@ sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
 --key-type gran
 echo "Grandpa Key Created"
 
-#! Create System File
-
 sudo tee /etc/systemd/system/full.service > /dev/null << EOF
 [Unit]
 Description=Tangle Full Node
@@ -150,18 +140,16 @@ ExecStart=/usr/bin/tangle \
 WantedBy=multi-user.target
 EOF
 
-#! Start Service
-
 sudo systemctl daemon-reload
 sudo systemctl enable full
 sudo systemctl restart full && sudo journalctl -u full -f -o cat
 
 fi
 
-#! Cleanup
-
 sudo rm -rf tangle_install
 
 echo "Check logs: sudo journalctl -u full -f -o cat"
 
 echo "Check status: sudo systemctl status full"
+
+EOF
