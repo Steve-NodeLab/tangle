@@ -80,41 +80,6 @@ sudo mv tangle /usr/bin/
 sudo tangle --version
 # 0.5.0-e892e17-x86_64-linux-gnu
 
-sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
---chain tangle-testnet \
---scheme Sr25519 \
---suri "$PASSPHRASE" \
---key-type acco
-echo "Account Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Sr25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type babe
-echo "Babe Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Sr25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type imon
-echo "ImOnline Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Ecdsa \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type role
-echo "Role Key Created"
-
-sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
---chain tangle-mainnet \
---scheme Ed25519 \
---suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
---key-type gran
-echo "Grandpa Key Created"
-
 sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
 
 sudo chmod 744 ~/.tangle/tangle-mainnet.json
