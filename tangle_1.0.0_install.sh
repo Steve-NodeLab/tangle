@@ -51,7 +51,7 @@ if [ "$choice" == "y" ]; then
      fi
      MONIKER="$input_moniker"
      echo "Node Name is: $MONIKER"
-
+fi
 if [ "$choice" == "y" ]; then
 	read -p "Input 12 word Menomic Phrase for Validator Account: " input_phrase
 	if [ -z "$input_phrase" ]; then
@@ -62,7 +62,7 @@ if [ "$choice" == "y" ]; then
 		echo "12 word Menomic Passphrase is: $PASSPHRASE"
 fi
 
-#! Install Build Pre-requisites
+# Install Build Pre-requisites
 
 sudo apt update && apt upgrade -y
 
@@ -70,7 +70,7 @@ sudo apt install curl iptables build-essential git wget jq make gcc nano tmux ht
 
 cd $HOME
 
-#! Install Tangle
+# Install Tangle
 
 sudo mkdir -p $HOME/.tangle && cd $HOME/.tangle
 
@@ -80,11 +80,48 @@ sudo mv tangle /usr/bin/
 sudo tangle --version
 # 0.5.0-e892e17-x86_64-linux-gnu
 
+# Create Keys
+
+sudo /usr/bin/tangle key insert --base-path $HOME/.tangle/data \
+--chain tangle-testnet \
+--scheme Sr25519 \
+--suri "$PASSPHRASE" \
+--key-type acco
+echo "Account Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type babe
+echo "Babe Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Sr25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type imon
+echo "ImOnline Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ecdsa \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type role
+echo "Role Key Created"
+
+sudo /usr/bin/tangle key insert --base-path /home/root/.tangle/data \
+--chain tangle-mainnet \
+--scheme Ed25519 \
+--suri "govern lunar dose blanket nothing method chuckle circle scatter nurse wish cake" \
+--key-type gran
+echo "Grandpa Key Created"
+
 sudo wget -O $HOME/.tangle/tangle-mainnet.json "https://github.com/webb-tools/tangle/blob/main/chainspecs/mainnet/tangle-mainnet.json"
 
 sudo chmod 744 ~/.tangle/tangle-mainnet.json
 
-#! Create System File
+# Create System File
 
 sudo tee /etc/systemd/system/full.service > /dev/null << EOF
 [Unit]
@@ -110,7 +147,7 @@ ExecStart=/usr/bin/tangle \
 WantedBy=multi-user.target
 EOF
 
-#! Start Service
+# Start Service
 
 sudo systemctl daemon-reload
 sudo systemctl enable full
@@ -118,7 +155,7 @@ sudo systemctl restart full && sudo journalctl -u full -f -o cat
 
 fi
 
-#! Cleanup
+# Cleanup
 
 sudo rm -rf tangle_install
 
