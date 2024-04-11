@@ -43,32 +43,26 @@ read -p "Do you want run node Tangle Network? (y/n): " choice
 
 if [ "$choice" == "y" ]; then
 
-if [ "$choice" == "y" ]; then
     read -p "Set Node Name: " input_moniker
     if [ -z "$input_moniker" ]; then
     echo "Node Name cannot be empty!"
     exit 1
-     fi
      MONIKER="$input_moniker"
      echo "Node Name is: $MONIKER"
 
-if [ "$choice" == "y" ]; then
     read -p "Input current server username: " input_username
     if [ -z "$input_username" ]; then
     echo "Node Name cannot be empty!"
     exit 1
-     fi
      USERNAME="$input_username"
      echo "UserName is: $USERNAME"
 
-if [ "$choice" == "y" ]; then
-	read -p "Input 12 word Menomic Phrase for Validator Account: " input_passphrase
-	if [ -z "$input_passphrase" ]; then
-	echo "Passphrase cannot be empty!"
-	exit 1
-		fi
-		PASSPHRASE="$input_passphrase"
-		echo "12 word Menomic Passphrase is: $PASSPHRASE"
+    read -p "Input 12 word Menomic Phrase for Validator Account: " input_passphrase
+    if [ -z "$input_passphrase" ]; then
+    echo "Passphrase cannot be empty!"
+    exit 1
+      PASSPHRASE="$input_passphrase"
+      echo "12 word Menomic Passphrase is: $PASSPHRASE"
 fi
 
 #! Install Build Pre-requisites
