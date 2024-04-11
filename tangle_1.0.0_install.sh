@@ -130,7 +130,7 @@ After=network-online.target
 StartLimitIntervalSec=0
  
 [Service]
-User="$USERNAME"
+User=$USER
 Restart=always
 RestartSec=3
 ExecStart=/usr/bin/tangle \
